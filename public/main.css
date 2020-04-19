@@ -80,7 +80,7 @@ button.extreme:active {
   opacity: 100%;
 }
 
-
+h1,
 .buttons,
 .board,
 .instructions,
@@ -91,6 +91,10 @@ button.extreme:active {
   flex-wrap: wrap;
   row-gap: 5px;
   margin: 5px;
+}
+
+h1{
+  margin-top: 50px;
 }
 
 .instructions{

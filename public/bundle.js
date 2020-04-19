@@ -158,7 +158,7 @@ For example, B3/S23 means cell survives only with 2 or 3 neighbors and born when
       }
   }
 
-  const fragmentRect = [20, 20, 60, 60];
+  const fragmentRect = [30, 30, 40, 40];
   function elementIndex(e) {
       return [...e.parentElement.childNodes].indexOf(e);
   }
@@ -279,6 +279,7 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
       }
       render(props, { game, showLevels, showCustom, customLevels, solutions }) {
           return (h("div", null,
+              h("h1", null, "Cellular: Automata"),
               h("button", { class: "top-left-levels", onClick: () => this.showLevels() }, ">>"),
               h("div", { class: "levels" + (showLevels ? " active" : "") },
                   h("button", { onClick: () => this.showLevels() }, "<<"),

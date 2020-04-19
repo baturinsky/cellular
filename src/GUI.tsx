@@ -9,7 +9,7 @@ import {
 } from "preact";
 import Game from "./Game";
 
-const fragmentRect = [20, 20, 60, 60];
+const fragmentRect = [30, 30, 40, 40];
 
 /*const modes = [
   "B3/S23 Life",
@@ -177,6 +177,8 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
   ) {
     return (
       <div>
+        <h1>Cellular: Automata</h1>
+
         <button class="top-left-levels" onClick={() => this.showLevels()}>
           &gt;&gt;
         </button>
