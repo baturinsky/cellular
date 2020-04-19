@@ -128,7 +128,8 @@ Each digit after the B on the button means that in empty cell with as much livin
                   return "";
               });
               s = s.trim();
-              this.buttons[s] = (this.buttons[s] || 0) + n;
+              if (s.length > 0)
+                  this.buttons[s] = (this.buttons[s] || 0) + n;
           }
           console.log(this.buttons);
       }
@@ -187,9 +188,31 @@ B1/S*2; B2/S*2; B3/S*2; B4/S*2
 ..#..
 .#...
 #....
+===
+B1/S; B2/S*2; B/S3; B/S4;
+#
 ===  
 B1/S*2; B2/S*2; B3/S*2; B4/S*2
 #
+===
+B1/S*2;B2/S*2;B1/S1*2;B/S3*2
+#...#
+.....
+.....
+.....
+#...#
+===
+B2/S*3;B3/S23*3;B/S8
+####
+===
+B1/S;B2/S;B3/S;B4/S;B5/S
+#.....#
+.#...#.
+..#.#..
+...#...
+..#.#..
+.#...#.
+#.....#
 ===  
 B/S0; B/S1; B/S2; B/S3; B2/S
 #####
@@ -290,7 +313,7 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
               console.log(game.history.map((record) => record.move));
           }
           this.setState({ game, peek: null });
-          if (game.success) {
+          if (game.success()) {
               let solutions = this.state.solutions;
               solutions[game.config] = game.history.map((record) => record.move);
               this.setState({ solutions });

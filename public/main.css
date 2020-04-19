@@ -65,18 +65,21 @@ button.extreme:active {
 .levels{
   position:absolute;
   top:0;
-  left: -50vw;
+  left: -200px;
+  opacity: 0%;
   display: flex;
   flex-direction: column;
   background: white;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  transition-property: left;
+  transition-property: left, opacity;
   transition-duration: 0.3s;
 }
 
 .levels.active{
   left: 0;
+  opacity: 100%;
 }
+
 
 .buttons,
 .board,

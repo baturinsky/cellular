@@ -25,7 +25,8 @@ export default class Game {
         return "";
       });
       s = s.trim();
-      this.buttons[s] = (this.buttons[s] || 0) + n;
+      if(s.length>0)
+        this.buttons[s] = (this.buttons[s] || 0) + n;
     }
     console.log(this.buttons);
   }
