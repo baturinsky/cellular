@@ -6,6 +6,8 @@
 Buttons can kill some cells and create new ones, according to what's written on the button.
 Each digit after the S on the button means that a living cell with as much living neighbors will live, otherwise it will die.
 Each digit after the B on the button means that in empty cell with as much living neighbors, a new living cell will appear.
+
+For example, B3/S23 means cell survives only with 2 or 3 neighbors and born when there is 3 neighbors.
 `
   };
 
@@ -165,7 +167,7 @@ B/S1; B2/S; B3/S
 .##
 ##.
 .#.
-===  
+===
 B/S0; B/S1; B/S2; B/S5
 ######
 ######
@@ -188,6 +190,13 @@ B1/S*2; B2/S*2; B3/S*2; B4/S*2
 ..#..
 .#...
 #....
+===
+B1/S; B2/S; B3/S; B4/S; B5/S; B3/S23
+#..##..#.#.###
+#..#.#.#.#.#..
+#..#.#.###.###
+#..#.#...#.#.#
+##.##....#.###
 ===
 B1/S; B2/S*2; B/S3; B/S4;
 #
@@ -236,6 +245,17 @@ B/S0; B/S1; B/S2; B/S3; B2/S01234
 .......
 #######
 ===  
+B1/S*2;B2/S*2;B3/S*2;B4/S*2
+..###..
+..#.#..
+..#.#..
+...#...
+#.###..
+.#.#.#.
+...#..#
+..#.#..
+..#.#..
+===
 B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
 ####.##
 #.....#
@@ -274,7 +294,7 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
                           ? "Solved: " + solutions[level].join(" > ")
                           : Game.parseConfig(level)[0],
                       h("div", { class: "preview" }, Game.parseConfig(level)[1]
-                          .replace(/\./g, "□")
+                          .replace(/\./g, " ")
                           .replace(/#/g, "■")))))),
                   h("button", { onClick: () => this.toggleCustom() }, showCustom ? "Cancel" : "Customize levels")),
               h("div", { class: "status" }, game.automata.isAlive() ? (!this.state.game.hasButtonsLeft() ? (h("div", null,

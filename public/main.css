@@ -147,10 +147,11 @@ table.grid td.nextAlive {
   white-space: pre;
   font-size: 8px;
   line-height: 4px;
-  letter-spacing: -1em;
+  letter-spacing: -1px;
   margin-left: 30px;
   margin-right: 5px;
   text-align: left;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .top-left-levels{
