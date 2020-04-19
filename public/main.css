@@ -83,7 +83,6 @@ button.extreme:active {
 h1,
 .buttons,
 .board,
-.instructions,
 .menu {
   display: flex;
   flex-direction: row;
@@ -93,15 +92,19 @@ h1,
   margin: 5px;
 }
 
+
 h1{
   margin-top: 50px;
 }
 
 .instructions{
+  display: flex;
+  flex-direction: column;
   position: relative;
   background: white;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  width:80vw;
+  width:900px;
+  padding: 10px;
   margin-left: auto;
   margin-right: auto;
   bottom: 500px;
@@ -114,7 +117,7 @@ h1{
   justify-content: center;
   position: absolute;
   width: 100vw;
-  top: 550px;
+  top: 500px;
   font-size: 40pt;
 }
 
