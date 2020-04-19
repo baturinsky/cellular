@@ -159,7 +159,7 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
 
 export default class GUI extends Component<{ asString?: boolean }, GUIState> {
   state = {
-    game: new Game(_levels[0]),
+    game: new Game(_levels[localStorage["celau-last-played"]] || _levels[0]),
     levels:_levels,
     customLevels: _levels.join("\n===\n"),
     solutions: JSON.parse(localStorage["celau-solutions"] || "{}"),
@@ -169,6 +169,7 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
 
   playLevel(config: string) {
     this.setState({ game: new Game(config) });
+    localStorage["celau-last-played"] = this.state.levels.indexOf(config)
   }
 
   render(
@@ -195,7 +196,7 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
           ) : (
             this.state.levels.map((level, i) => (
               <button
-                onClick={() => {
+                onClick={() => {                  
                   this.playLevel(level);
                   this.showLevels();
                 }}
@@ -263,8 +264,8 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
           ))}
         </div>
         <div class="menu">
-          <button onClick={() => this.showLevels()}>Levels</button>
-          <button style="z-index:10" onClick={() => this.showHelp()}>
+          <button style="z-index:10" onClick={() => this.showLevels()}>Levels</button>
+          <button onClick={() => this.showHelp()}>
             Instructions
           </button>
           <button
@@ -409,11 +410,12 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
 
   applyCustom(): void {
     let levels = this.state.customLevels.split("===").map((s) => s.trim());
+    let curLevel = this.levelInd()
     this.setState({
       levels ,
       showCustom: false,
       showLevels: false,
-      game: new Game(levels[0])
+      game: new Game(levels[curLevel] || levels[0])
     });
   }
 

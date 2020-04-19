@@ -267,7 +267,7 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
       constructor() {
           super(...arguments);
           this.state = {
-              game: new Game(_levels[0]),
+              game: new Game(_levels[localStorage["celau-last-played"]] || _levels[0]),
               levels: _levels,
               customLevels: _levels.join("\n===\n"),
               solutions: JSON.parse(localStorage["celau-solutions"] || "{}"),
@@ -276,6 +276,7 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
       }
       playLevel(config) {
           this.setState({ game: new Game(config) });
+          localStorage["celau-last-played"] = this.state.levels.indexOf(config);
       }
       render(props, { game, showLevels, showCustom, customLevels, solutions }) {
           return (h("div", null,
@@ -314,8 +315,8 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
                       } }, rule +
                       (game.buttons[rule] > 1 ? "*" + game.buttons[rule] : "")))))),
               h("div", { class: "menu" },
-                  h("button", { onClick: () => this.showLevels() }, "Levels"),
-                  h("button", { style: "z-index:10", onClick: () => this.showHelp() }, "Instructions"),
+                  h("button", { style: "z-index:10", onClick: () => this.showLevels() }, "Levels"),
+                  h("button", { onClick: () => this.showHelp() }, "Instructions"),
                   h("button", { style: game.canUndo() ? "" : "visibility:hidden", onMouseOver: () => {
                           this.preview = true;
                           this.predict("undo");
@@ -404,11 +405,12 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
       }
       applyCustom() {
           let levels = this.state.customLevels.split("===").map((s) => s.trim());
+          let curLevel = this.levelInd();
           this.setState({
               levels,
               showCustom: false,
               showLevels: false,
-              game: new Game(levels[0])
+              game: new Game(levels[curLevel] || levels[0])
           });
       }
       onCustomChange(e) {
