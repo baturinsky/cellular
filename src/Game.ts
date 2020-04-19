@@ -47,4 +47,12 @@ export default class Game {
   canUndo() {
     return this.history.length > 0;
   }
+
+  hasButtonsLeft(){
+    return Math.max.apply(null, Object.values(this.buttons)) >= 1
+  }
+
+  success() {    
+    return this.automata.isAlive() && !this.hasButtonsLeft();
+  }
 }

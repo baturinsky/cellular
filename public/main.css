@@ -23,7 +23,8 @@ button{
   background: white;
   border: solid 1px white;
   cursor: pointer;
-  margin: 5px;
+  margin: 3px;
+  margin-bottom: 5px;
 }
 
 .levels button{
@@ -49,8 +50,6 @@ button:hover{
 button.extreme {
   background: white;
   border: solid 1px black;
-  margin: 2px;
-  margin-bottom: 5px;
   box-shadow: 2px 2px 0px black;
   padding: 3px;
   white-space: pre;
@@ -161,4 +160,9 @@ table.grid td.nextAlive {
 
 .top-left-levels:hover{
   background: white;  
+}
+
+textarea{
+  width:400px;
+  height:500px;
 }

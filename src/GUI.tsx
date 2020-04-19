@@ -44,15 +44,18 @@ type GUIState = {
   game: Game;
   peek?: string;
   showLevels: boolean;
+  showCustom: boolean;
+  customLevels: string;
   instructionsVisible: boolean;
   levels: string[];
+  solutions: { [level: string]: string[] };
 };
 
 function elementIndex(e: HTMLElement) {
   return [...e.parentElement.childNodes].indexOf(e);
 }
 
-const levels = `
+const _levels = `
 B/S1; B2/S; B3/S
 .##
 ##.
@@ -116,21 +119,22 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
 
 export default class GUI extends Component<{ asString?: boolean }, GUIState> {
   state = {
-    game: new Game(levels[0]),
-    levels,
+    game: new Game(_levels[0]),
+    levels:_levels,
+    customLevels: _levels.join("\n===\n"),
+    solutions: JSON.parse(localStorage["celau-solutions"] || "{}"),
   } as GUIState;
 
   preview = false;
-
-  hasButtons(): boolean {
-    return Math.max.apply(null, Object.values(this.state.game.buttons)) >= 1;
-  }
 
   playLevel(config: string) {
     this.setState({ game: new Game(config) });
   }
 
-  render(props, { game, showLevels }: GUIState) {
+  render(
+    props,
+    { game, showLevels, showCustom, customLevels, solutions }: GUIState
+  ) {
     return (
       <div>
         <button class="top-left-levels" onClick={() => this.showLevels()}>
@@ -138,32 +142,47 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
         </button>
         <div class={"levels" + (showLevels ? " active" : "")}>
           <button onClick={() => this.showLevels()}>&lt;&lt;</button>
-          {levels.map((level, i) => (
-            <button
-              onClick={() => {
-                this.playLevel(level);
-                this.showLevels();
-              }}
-            >
-              {i}.&nbsp;
-              {Game.parseConfig(level)[0]}
-              <div class="preview">
-                {Game.parseConfig(level)[1]
-                  .replace(/\./g, "□")
-                  .replace(/#/g, "■")}
-              </div>
-            </button>
-          ))}
+
+          {showCustom ? (
+            <div>
+              <textarea onInput={(e) => this.onCustomChange(e)}>
+                {customLevels}
+              </textarea>
+              <button class="extreme" style="width:96%" onClick={() => this.applyCustom()}>Apply</button>
+            </div>
+          ) : (
+            this.state.levels.map((level, i) => (
+              <button
+                onClick={() => {
+                  this.playLevel(level);
+                  this.showLevels();
+                }}
+              >
+                {i}.&nbsp;
+                {solutions[level]
+                  ? "Solved: " + solutions[level].join(" > ")
+                  : Game.parseConfig(level)[0]}
+                <div class="preview">
+                  {Game.parseConfig(level)[1]
+                    .replace(/\./g, "□")
+                    .replace(/#/g, "■")}
+                </div>
+              </button>
+            ))
+          )}
+          <button onClick={() => this.toggleCustom()}>{showCustom?"Cancel":"Customize levels"}</button>
         </div>
         <div class="status">
           {game.automata.isAlive() ? (
-            !this.hasButtons() ? (
+            !this.state.game.hasButtonsLeft() ? (
               <div>
                 Success.&nbsp;
                 {this.levelInd() == this.state.levels.length - 1 ? (
                   "This is the last level"
                 ) : (
-                  <button class="extreme" onClick={() => this.nextLevel()}>Next Level</button>
+                  <button class="extreme" onClick={() => this.nextLevel()}>
+                    Next Level
+                  </button>
                 )}
               </div>
             ) : (
@@ -172,7 +191,9 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
           ) : (
             <div>
               Failure. All cells are dead.
-              <button class="extreme" onClick={() => this.restartLevel()}>Restart</button>
+              <button class="extreme" onClick={() => this.restartLevel()}>
+                Restart
+              </button>
             </div>
           )}
         </div>
@@ -231,8 +252,21 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
   }
 
   pressButton(rule) {
-    this.state.game.play(rule);
-    this.setState({ game: this.state.game, peek: null });
+    let game = this.state.game;
+    game.play(rule);
+    if (game.success()) {
+      console.log(game.history.map((record) => record.move));
+    }
+
+    this.setState({ game, peek: null });
+
+    if (game.success) {
+      let solutions = this.state.solutions;
+      solutions[game.config] = game.history.map((record) => record.move);
+      this.setState({ solutions });
+      localStorage["celau-solutions"] = JSON.stringify(solutions);
+    }
+
     /*setTimeout(() => {
       if (this.preview) this.predict(rule);
     }, 300);*/
@@ -264,7 +298,7 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
           class="grid"
           onClick={(event) => {
             let e = event.target as HTMLElement;
-            if (e.nodeName == "TD" && event.shiftKey) {              
+            if (e.nodeName == "TD" && event.shiftKey) {
               let [x, y] = [elementIndex(e), elementIndex(e.parentElement)];
               this.automata.toggle([x + fragmentRect[0], y + fragmentRect[1]]);
               this.setState({ game: this.state.game });
@@ -314,6 +348,10 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
     this.setState({ instructionsVisible: !this.state.instructionsVisible });
   }
 
+  toggleCustom(): void {
+    this.setState({ showCustom: !this.state.showCustom });
+  }
+
   levelInd() {
     return this.state.levels.indexOf(this.state.game.config);
   }
@@ -325,5 +363,19 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
 
   restartLevel(): void {
     this.playLevel(this.state.game.config);
+  }
+
+  applyCustom(): void {
+    let levels = this.state.customLevels.split("===").map((s) => s.trim());
+    this.setState({
+      levels ,
+      showCustom: false,
+      showLevels: false,
+      game: new Game(levels[0])
+    });
+  }
+
+  onCustomChange(e: Event) {
+    this.setState({ customLevels: (e.target as HTMLTextAreaElement).value });
   }
 }
