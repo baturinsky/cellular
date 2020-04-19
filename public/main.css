@@ -1,0 +1,164 @@
+@font-face {
+  font-family: "Text";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./DidactGothic.woff") format("woff"),
+    url(https://fonts.gstatic.com/s/didactgothic/v13/ahcfv8qz1zt6hCC5G4F_P4ASlUuYpg.woff2)
+      format("woff2");
+}
+
+body,
+button,
+div {
+  font-family: Text;
+  font-size: 16px;
+}
+
+body {
+  background: white;
+}
+
+button{
+  background: white;
+  border: solid 1px white;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.levels button{
+  box-shadow: none;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+button:disabled {
+  visibility: hidden;
+}
+
+button:hover{
+  border: solid 1px lightgray;
+}
+
+.menu button {
+  margin: 5px;
+}
+
+button.extreme {
+  background: white;
+  border: solid 1px black;
+  margin: 2px;
+  margin-bottom: 5px;
+  box-shadow: 2px 2px 0px black;
+  padding: 3px;
+  white-space: pre;
+}
+
+button.extreme:active {
+  box-shadow: 1px 1px 0px black;
+  margin-top: 3px;
+  padding: 3px;
+}
+
+
+.levels{
+  position:absolute;
+  top:0;
+  left: -50vw;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  transition-property: left;
+  transition-duration: 0.3s;
+}
+
+.levels.active{
+  left: 0;
+}
+
+.buttons,
+.board,
+.instructions,
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 5px;
+  margin: 5px;
+}
+
+.instructions{
+  position: relative;
+  background: white;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  width:80vw;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 500px;
+  white-space: pre-wrap;
+}
+
+.status{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  width: 100vw;
+  top: 550px;
+  font-size: 40pt;
+}
+
+.status > div{
+  display: flex;
+  flex-direction: column;  
+  justify-content: center;
+  text-align: center;
+}
+
+
+table.grid {
+  border: solid 3px black;
+  border-spacing: 0px;
+}
+
+table.grid td {
+  border: solid 2px #dfd;
+  width: 6px;
+  height: 12px;
+  transition-property: background-color, border-color;
+  transition-duration: 0.2s;
+}
+
+table.grid td.alive {
+  background-color: green;
+}
+
+table.grid td.nextAlive {
+  border-color: green;
+}
+
+.preview{
+  white-space: pre;
+  font-size: 8px;
+  line-height: 4px;
+  letter-spacing: -1em;
+  margin-left: 30px;
+  margin-right: 5px;
+  text-align: left;
+}
+
+.top-left-levels{
+  position:absolute;
+  top:0;
+  width:100px;
+  border: 0;
+  box-shadow: none;
+}
+
+.top-left-levels:hover{
+  background: white;  
+}
