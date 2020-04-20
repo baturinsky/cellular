@@ -8,6 +8,7 @@ import {
   createContext,
 } from "preact";
 import Game from "./Game";
+import Automata from "./Automata";
 
 const fragmentRect = [30, 30, 40, 40];
 
@@ -243,9 +244,10 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
         <div class="board">{this.renderFragment()}</div>
         <div class="buttons">
           {Object.keys(game.buttons).map((rule) => (
-            <div style="height:30px">
+            <div style="height:50px">
               <button
-                class="extreme"
+                class="extreme card"
+                style="height:50px"
                 disabled={!game.buttons[rule]}
                 onClick={() => this.pressButton(rule)}
                 onMouseOver={() => {
@@ -259,6 +261,9 @@ export default class GUI extends Component<{ asString?: boolean }, GUIState> {
               >
                 {rule +
                   (game.buttons[rule] > 1 ? "*" + game.buttons[rule] : "")}
+                <div class="rule-preview">
+                  {Automata.parseRules(rule).map(line => <div>{Array.from(line).map(c => c?"■":"□")}</div>)}
+                </div>
               </button>
             </div>
           ))}

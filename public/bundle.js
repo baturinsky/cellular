@@ -2,10 +2,10 @@
   'use strict';
 
   const lang = {
-      instructions: `Goal of the game is to press all the buttons in the right order without killing all the cells.
-Buttons can kill some cells and create new ones, according to what's written on the button.
-Each digit after the S on the button means that a living cell with as much living neighbors will live, otherwise it will die.
-Each digit after the B on the button means that in empty cell with as much living neighbors, a new living cell will appear.
+      instructions: `Goal of the game is to play al the cards in the right order without killing all the cells.
+Card can kill some cells and create new ones, according to what's written on the card.
+Each digit after the S on the card means that a living cell with as much living neighbors will live, otherwise it will die.
+Each digit after the B on the card means that in empty cell with as much living neighbors, a new living cell will appear.
 
 For example, B3/S23 means cell survives only with 2 or 3 neighbors and born when there is 3 neighbors.
 `
@@ -305,15 +305,17 @@ B/S0; B/S1; B/S2; B/S3; B/S4; B2/S0*2
                   "Failure. All cells are dead.",
                   h("button", { class: "extreme", onClick: () => this.restartLevel() }, "Restart")))),
               h("div", { class: "board" }, this.renderFragment()),
-              h("div", { class: "buttons" }, Object.keys(game.buttons).map((rule) => (h("div", { style: "height:30px" },
-                  h("button", { class: "extreme", disabled: !game.buttons[rule], onClick: () => this.pressButton(rule), onMouseOver: () => {
+              h("div", { class: "buttons" }, Object.keys(game.buttons).map((rule) => (h("div", { style: "height:50px" },
+                  h("button", { class: "extreme card", style: "height:50px", disabled: !game.buttons[rule], onClick: () => this.pressButton(rule), onMouseOver: () => {
                           this.preview = true;
                           this.predict(rule);
                       }, onMouseOut: () => {
                           this.preview = false;
                           this.predict(null);
-                      } }, rule +
-                      (game.buttons[rule] > 1 ? "*" + game.buttons[rule] : "")))))),
+                      } },
+                      rule +
+                          (game.buttons[rule] > 1 ? "*" + game.buttons[rule] : ""),
+                      h("div", { class: "rule-preview" }, Automata.parseRules(rule).map(line => h("div", null, Array.from(line).map(c => c ? "■" : "□"))))))))),
               h("div", { class: "menu" },
                   h("button", { style: "z-index:10", onClick: () => this.showLevels() }, "Levels"),
                   h("button", { onClick: () => this.showHelp() }, "Instructions"),

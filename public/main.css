@@ -61,6 +61,13 @@ button.extreme:active {
   padding: 3px;
 }
 
+button.extreme:hover{
+}
+
+button.card:hover{
+  margin-top: 1px;
+}
+
 
 .levels{
   position:absolute;
@@ -160,6 +167,22 @@ table.grid td.nextAlive {
   text-align: left;
   font-family: 'Courier New', Courier, monospace;
 }
+
+.rule-preview{  
+  font-size: 8px;
+  line-height: 6px;
+  letter-spacing: -3px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/*.rule-preview div:nth-child(1){
+  color: green;
+}
+
+.rule-preview div:nth-child(2){
+  color: blue;
+}*/
+
 
 .top-left-levels{
   position:absolute;
