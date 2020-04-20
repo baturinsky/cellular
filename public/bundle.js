@@ -2,8 +2,8 @@
   'use strict';
 
   const lang = {
-      instructions: `Goal of the game is to play al the cards in the right order without killing all the cells.
-Card can kill some cells and create new ones, according to what's written on the card.
+      instructions: `Goal of the game is to play all the cards in such an order that at least one alive cell is left.
+A card can kill some cells and create new ones, according to the rule written on the card.
 Each digit after the S on the card means that a living cell with as much living neighbors will live, otherwise it will die.
 Each digit after the B on the card means that in empty cell with as much living neighbors, a new living cell will appear.
 
